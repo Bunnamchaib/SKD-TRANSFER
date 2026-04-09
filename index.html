@@ -1,215 +1,771 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cute Slip Generator - Save PNG</title>
-    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <style>
-        :root {
-            --primary-pink: #ffafcc;
-            --dark-pink: #fb6f92;
-            --bg-gradient: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Whale Bank Cute Slip Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    :root{
+      --theme-1:#7b2cbf;
+      --theme-2:#9d4edd;
+      --theme-3:#5a189a;
+      --theme-soft:#f6efff;
+      --theme-accent:#ffd166;
+      --ok:#12c56a;
+      --ink:#222831;
+      --muted:#8d92a6;
+      --line:#ebedf4;
+      --paper:#ffffff;
+      --bg:#f4f5fb;
+      --theme-name: "ม่วงเมฆ";
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:'Kanit',sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(123,44,191,.12), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(255,209,102,.14), transparent 22%),
+        linear-gradient(135deg,#f6f7fb 0%,#edf1f8 100%);
+      color:var(--ink);
+      min-height:100vh;
+      padding:24px;
+    }
+    .wrap{
+      max-width:1180px;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns: 390px minmax(320px, 1fr);
+      gap:24px;
+      align-items:start;
+    }
+    .panel,.phone-shell{
+      background:rgba(255,255,255,.78);
+      backdrop-filter: blur(14px);
+      border:1px solid rgba(255,255,255,.75);
+      box-shadow:0 16px 50px rgba(44,62,80,.10);
+      border-radius:28px;
+    }
+    .panel{
+      padding:22px;
+      position:sticky;
+      top:18px;
+    }
+    .panel h1{
+      margin:0 0 6px;
+      font-size:1.45rem;
+      line-height:1.2;
+    }
+    .sub{
+      margin:0 0 18px;
+      color:var(--muted);
+      font-size:.95rem;
+    }
+    .grid2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    .group{margin-bottom:12px}
+    .group label{
+      display:block;
+      font-size:.86rem;
+      color:#5e667a;
+      margin-bottom:6px;
+      font-weight:500;
+    }
+    input, select, textarea{
+      width:100%;
+      border:1px solid #dde3ef;
+      background:#fff;
+      border-radius:14px;
+      padding:11px 13px;
+      font-family:inherit;
+      font-size:.98rem;
+      color:var(--ink);
+      outline:none;
+      transition:.2s ease;
+    }
+    input:focus, select:focus, textarea:focus{
+      border-color:var(--theme-2);
+      box-shadow:0 0 0 4px rgba(157,78,221,.12);
+    }
+    .theme-grid{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:10px;
+      margin-top:8px;
+    }
+    .theme-btn{
+      height:42px;
+      border:none;
+      border-radius:14px;
+      cursor:pointer;
+      position:relative;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.65), 0 8px 20px rgba(0,0,0,.08);
+      transition:.18s ease;
+    }
+    .theme-btn:hover{transform:translateY(-2px)}
+    .theme-btn.active::after{
+      content:"✓";
+      position:absolute;
+      right:8px;
+      bottom:7px;
+      width:18px;height:18px;
+      display:grid;place-items:center;
+      border-radius:50%;
+      background:#fff;
+      color:#222;
+      font-size:.78rem;
+      font-weight:700;
+    }
+    .actions{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:16px;
+    }
+    button{
+      border:none;
+      border-radius:16px;
+      padding:13px 16px;
+      font-family:inherit;
+      font-size:1rem;
+      font-weight:600;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+    .btn-primary{
+      background:linear-gradient(135deg,var(--theme-1),var(--theme-2));
+      color:#fff;
+      box-shadow:0 10px 24px rgba(90,24,154,.24);
+    }
+    .btn-secondary{
+      background:#eef2fb;
+      color:#384255;
+    }
+    button:hover{transform:translateY(-1px)}
+    .phone-shell{
+      padding:18px;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+    }
+    #captureArea{
+      padding:10px;
+      background:transparent;
+    }
+    .slip{
+      width:390px;
+      background:var(--paper);
+      border-radius:0 0 26px 26px;
+      overflow:hidden;
+      box-shadow:0 22px 55px rgba(64,55,90,.16);
+      position:relative;
+    }
+    .slip-top{
+      background:
+        radial-gradient(circle at 18% 25%, rgba(255,255,255,.18) 0 28px, transparent 29px),
+        radial-gradient(circle at 80% 18%, rgba(255,255,255,.14) 0 34px, transparent 35px),
+        linear-gradient(180deg,var(--theme-1) 0%, var(--theme-2) 100%);
+      height:132px;
+      position:relative;
+      overflow:hidden;
+      color:#fff;
+    }
+    .cloud{position:absolute; opacity:.28; background:#fff; filter: blur(.2px);}
+    .cloud.c1{width:86px;height:28px;left:28px;top:24px;border-radius:50px}
+    .cloud.c1::before,.cloud.c1::after,.cloud.c2::before,.cloud.c2::after,.cloud.c3::before,.cloud.c3::after{
+      content:""; position:absolute; background:#fff; border-radius:50%;
+    }
+    .cloud.c1::before{width:30px;height:30px;left:8px;top:-10px}
+    .cloud.c1::after{width:34px;height:34px;left:37px;top:-14px}
+    .cloud.c2{width:110px;height:34px;right:18px;top:20px;border-radius:50px}
+    .cloud.c2::before{width:34px;height:34px;left:14px;top:-12px}
+    .cloud.c2::after{width:44px;height:44px;left:50px;top:-18px}
+    .cloud.c3{width:64px;height:22px;left:112px;top:58px;border-radius:50px}
+    .cloud.c3::before{width:24px;height:24px;left:8px;top:-9px}
+    .cloud.c3::after{width:26px;height:26px;left:30px;top:-11px}
 
-        body {
-            font-family: 'Kanit', sans-serif;
-            background: var(--bg-gradient);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px;
-            color: #4a4a4a;
-        }
+    .bankbar{
+      position:relative;
+      z-index:2;
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:18px 20px 0;
+    }
+    .banklogo{
+      width:42px;height:42px;border-radius:16px;
+      background:linear-gradient(135deg,#fff,rgba(255,255,255,.78));
+      display:grid;place-items:center;
+      color:var(--theme-1);
+      font-size:1.35rem;
+      box-shadow:0 10px 24px rgba(0,0,0,.12);
+      font-weight:700;
+    }
+    .bankmeta{min-width:0}
+    .bankname{
+      font-size:1.28rem;
+      font-weight:700;
+      line-height:1.1;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-width:250px;
+    }
+    .banktheme{
+      font-size:.78rem;
+      opacity:.85;
+      font-weight:300;
+      letter-spacing:.2px;
+    }
 
-        .controls {
-            background: white;
-            padding: 20px;
-            border-radius: 20px;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            max-width: 400px;
-            width: 100%;
-        }
-
-        .input-group { margin-bottom: 12px; }
-        label { display: block; font-size: 0.8rem; color: #888; margin-bottom: 4px; }
-        input, select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #eee;
-            border-radius: 10px;
-            box-sizing: border-box;
-        }
-
-        /* ปุ่ม Save */
-        .btn-save {
-            width: 100%;
-            padding: 15px;
-            background-color: var(--dark-pink);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-family: 'Kanit', sans-serif;
-            font-size: 1rem;
-            cursor: pointer;
-            margin-top: 15px;
-            transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(251, 111, 146, 0.3);
-        }
-        .btn-save:hover { background-color: #ff4d6d; transform: translateY(-2px); }
-        .btn-save:active { transform: translateY(0); }
-
-        /* การตกแต่งสลิป */
-        #slip-area {
-            background: transparent;
-            padding: 15px; /* พื้นที่เผื่อ shadow ตอนเซฟ */
-        }
-
-        .slip-card {
-            width: 330px;
-            background: white;
-            border-radius: 25px;
-            padding: 25px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            position: relative;
-        }
-
-        .header { text-align: center; margin-bottom: 20px; }
-        .header h2 { margin: 0; color: var(--dark-pink); letter-spacing: 1px; }
-
-        .row { display: flex; justify-content: space-between; margin-bottom: 12px; }
-        .label { color: #aaa; font-size: 0.85rem; }
-        .value { font-weight: 500; }
-
-        .amount-wrap {
-            background: #fff5f8;
-            padding: 20px;
-            border-radius: 20px;
-            text-align: center;
-            margin: 15px 0;
-        }
-        .amt-big { font-size: 2rem; font-weight: bold; color: #ff4d6d; }
-        .curr-name { color: var(--dark-pink); display: block; }
-
-        #qrcode {
-            display: flex;
-            justify-content: center;
-            margin-top: 15px;
-            padding: 10px;
-        }
-
-        .watermark {
-            text-align: center;
-            font-size: 0.7rem;
-            color: #eee;
-            margin-top: 10px;
-        }
-    </style>
+    .sheet{
+      background:
+        linear-gradient(rgba(255,255,255,.94),rgba(255,255,255,.96)),
+        radial-gradient(circle at 12px 12px, rgba(123,44,191,.06) 0 2px, transparent 3px);
+      background-size:auto, 24px 24px;
+      padding:20px 0 0;
+      position:relative;
+      min-height:620px;
+    }
+    .status{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:8px;
+      padding:2px 24px 14px;
+      text-align:center;
+    }
+    .okbadge{
+      width:68px;height:68px;border-radius:50%;
+      display:grid;place-items:center;
+      background:linear-gradient(180deg,#20d97c,#10b860);
+      color:#fff;
+      font-size:2rem;
+      box-shadow:0 12px 25px rgba(16,184,96,.22);
+    }
+    .oktext{
+      color:#11a957;
+      font-size:2rem;
+      font-weight:500;
+      line-height:1;
+    }
+    .dt{color:#6f7483;font-size:1.02rem}
+    .ref{color:#9a9fb0;font-size:.92rem}
+    .divider{height:1px;background:var(--line);margin:14px 0}
+    .row{
+      display:grid;
+      grid-template-columns:62px 1fr auto;
+      gap:12px;
+      align-items:center;
+      padding:0 20px;
+    }
+    .label{
+      color:#2f3441;
+      font-size:1.02rem;
+      font-weight:500;
+    }
+    .person{
+      display:grid;
+      grid-template-columns:38px 1fr;
+      gap:12px;
+      align-items:center;
+      min-width:0;
+    }
+    .avatar{
+      width:38px;height:38px;border-radius:50%;
+      display:grid;place-items:center;
+      color:#fff;
+      font-size:1rem;
+      font-weight:700;
+      background:linear-gradient(135deg,var(--theme-1),var(--theme-2));
+      box-shadow:0 8px 18px rgba(123,44,191,.24);
+    }
+    .pname{
+      font-size:1.06rem;
+      font-weight:500;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .pacc{
+      color:#8f95a6;
+      font-size:1rem;
+      margin-top:2px;
+      letter-spacing:.3px;
+    }
+    .moneyline{
+      padding:0 20px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      min-height:52px;
+      font-size:1.08rem;
+    }
+    .moneyline .mvalue{
+      font-size:2rem;
+      font-weight:600;
+      color:#2b3140;
+    }
+    .moneyline.fee .mvalue{
+      font-size:1.5rem;
+      font-weight:500;
+      color:#384255;
+    }
+    .qrwrap{
+      display:flex;
+      justify-content:center;
+      padding:10px 20px 8px;
+    }
+    #qrcode{
+      width:92px;
+      min-height:92px;
+      background:#fff;
+      padding:10px;
+      border-radius:18px;
+      box-shadow:0 10px 26px rgba(0,0,0,.06);
+    }
+    .footer-art{
+      position:relative;
+      height:118px;
+      margin-top:10px;
+      background:
+        linear-gradient(180deg, rgba(255,214,214,0) 0%, rgba(255,222,214,.66) 100%);
+      overflow:hidden;
+    }
+    .hill{
+      position:absolute; left:-10%; right:-10%; bottom:0;
+      height:60px;
+      background:linear-gradient(180deg,#b7a0db,#8d75bf);
+      border-radius:50% 50% 0 0 / 100% 100% 0 0;
+      opacity:.56;
+    }
+    .field{
+      position:absolute; left:0; right:0; bottom:0; height:74px;
+      background:
+        repeating-linear-gradient(90deg, rgba(255,255,255,.16) 0 2px, transparent 2px 10px),
+        linear-gradient(180deg,#8b6ec0,#7e5bb9 45%, #68478f 100%);
+    }
+    .whale{
+      position:absolute;
+      left:50%; bottom:10px; transform:translateX(-50%);
+      width:88px; height:52px;
+      background:linear-gradient(180deg,#fff3f7,#ffd9e7);
+      border-radius:50px 44px 34px 34px;
+      box-shadow:0 10px 25px rgba(0,0,0,.10);
+    }
+    .whale:before{
+      content:"";
+      position:absolute; right:-10px; top:15px;
+      width:20px;height:18px;
+      background:linear-gradient(180deg,#fff3f7,#ffd9e7);
+      clip-path:polygon(0 50%,100% 0,100% 100%);
+    }
+    .whale:after{
+      content:"";
+      position:absolute; left:14px; top:-10px;
+      width:18px;height:18px;
+      background:linear-gradient(180deg,#fff3f7,#ffd9e7);
+      border-radius:0 100% 0 100%;
+      transform:rotate(-25deg);
+    }
+    .eye{
+      position:absolute; width:4px;height:4px;border-radius:50%;
+      background:#57446f; left:24px; top:24px;
+    }
+    .blush{
+      position:absolute; width:11px;height:6px;border-radius:10px;
+      background:rgba(255,120,160,.28); left:18px; top:28px;
+    }
+    .note{
+      font-size:.8rem;
+      color:#8b90a0;
+      margin-top:14px;
+      line-height:1.45;
+      background:#f6f8fe;
+      border:1px dashed #dde4f1;
+      padding:10px 12px;
+      border-radius:14px;
+    }
+    @media (max-width: 980px){
+      .wrap{grid-template-columns:1fr}
+      .panel{position:static}
+      .phone-shell{padding:14px}
+    }
+    @media (max-width: 520px){
+      body{padding:12px}
+      .panel{padding:16px;border-radius:22px}
+      .slip{width:100%}
+      #captureArea{width:100%;display:flex;justify-content:center}
+      .actions{grid-template-columns:1fr}
+    }
+  </style>
 </head>
 <body>
+  <div class="wrap">
+    <section class="panel">
+      <h1>Slip Generator น่ารัก</h1>
+      <p class="sub">ไฟล์เดียว index.html ปรับข้อมูลได้ทันที เลือกธีมได้ 15 สี และบันทึกเป็น PNG ได้</p>
 
-    <div class="controls">
-        <h3 style="margin-top:0; color:var(--dark-pink)">Slip Maker ✨</h3>
-        <div class="input-group">
-            <label>ผู้โอน / ผู้รับ</label>
-            <div style="display:flex; gap:5px;">
-                <input type="text" id="sIn" value="นำชัย" oninput="draw()">
-                <input type="text" id="rIn" value="หวานใจ" oninput="draw()">
-            </div>
-        </div>
-        <div class="input-group">
-            <label>จำนวนเงิน & สกุลเงิน</label>
-            <div style="display:flex; gap:5px;">
-                <input type="number" id="aIn" value="999" oninput="draw()" style="flex:2">
-                <select id="cIn" onchange="draw()" style="flex:1">
-                    <option value="เบรี">เบรี</option>
-                    <option value="บาท">บาท</option>
-                    <option value="ดอลลาร์">ดอลลาร์</option>
-                    <option value="ชิ้น">ชิ้น (ฟีลน่ารัก)</option>
-                </select>
-            </div>
-        </div>
-        <button class="btn-save" onclick="saveSlip()">💾 บันทึกเป็นรูปภาพ (PNG)</button>
-    </div>
+      <div class="group">
+        <label for="bankName">ชื่อธนาคาร</label>
+        <input id="bankName" value="ธนาคาร ปลาวาฬขาว" />
+      </div>
 
-    <div id="slip-area">
-        <div class="slip-card" id="target-slip">
-            <div class="header">
-                <div style="color: #2ecc71; font-size: 0.8rem;">● โอนเงินสำเร็จ</div>
-                <h2>CUTE TRANSFER</h2>
+      <div class="grid2">
+        <div class="group">
+          <label for="senderName">ชื่อผู้โอน</label>
+          <input id="senderName" value="หกดเกด้เดด่ดเ่เ่เ่เ่เ่" />
+        </div>
+        <div class="group">
+          <label for="senderAcc">เลขบัญชีผู้โอน</label>
+          <input id="senderAcc" value="xxxxxxxxxx88454" />
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="group">
+          <label for="receiverName">ชื่อผู้รับ</label>
+          <input id="receiverName" value="ปกดทืเดาืทดเสิมวด" />
+        </div>
+        <div class="group">
+          <label for="receiverAcc">เลขบัญชีผู้รับ</label>
+          <input id="receiverAcc" value="xxxxxxxxxxx15148" />
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="group">
+          <label for="amount">จำนวนเงิน</label>
+          <input id="amount" type="number" step="0.01" value="5454" />
+        </div>
+        <div class="group">
+          <label for="fee">ค่าธรรมเนียม</label>
+          <input id="fee" type="number" step="0.01" value="0" />
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="group">
+          <label for="refId">รหัสอ้างอิง / หมายเลขธุรกรรม</label>
+          <input id="refId" value="" />
+        </div>
+        <div class="group">
+          <label for="datetime">วันเวลา</label>
+          <input id="datetime" type="datetime-local" />
+        </div>
+      </div>
+
+      <div class="group">
+        <label for="qrText">ข้อความใน QR Code</label>
+        <input id="qrText" value="" />
+      </div>
+
+      <div class="group">
+        <label>เลือกธีมสี (15 สี)</label>
+        <div id="themeGrid" class="theme-grid"></div>
+      </div>
+
+      <div class="actions">
+        <button class="btn-primary" id="saveBtn">บันทึกเป็น PNG</button>
+        <button class="btn-secondary" id="randomBtn">สุ่มข้อมูลอ้างอิง</button>
+      </div>
+
+      <div class="note">
+        งานนี้ออกแบบเป็นสลิปโทนน่ารักเชิงตกแต่งสำหรับเดโม งานกราฟิก หรือคอนเทนต์เท่านั้น ผู้ใช้ปรับข้อความเองได้ทั้งหมด
+      </div>
+    </section>
+
+    <section class="phone-shell">
+      <div id="captureArea">
+        <div class="slip" id="slipCard">
+          <div class="slip-top">
+            <div class="cloud c1"></div>
+            <div class="cloud c2"></div>
+            <div class="cloud c3"></div>
+
+            <div class="bankbar">
+              <div class="banklogo">🐋</div>
+              <div class="bankmeta">
+                <div class="bankname" id="bankNameOut">ธนาคาร ปลาวาฬขาว</div>
+                <div class="banktheme" id="themeNameOut">ธีม ม่วงเมฆ</div>
+              </div>
             </div>
+          </div>
+
+          <div class="sheet">
+            <div class="status">
+              <div class="okbadge">✓</div>
+              <div class="oktext">โอนเงินสำเร็จ</div>
+              <div class="dt" id="dateOut"></div>
+              <div class="ref" id="refOut"></div>
+            </div>
+
+            <div class="divider"></div>
 
             <div class="row">
-                <span class="label">จาก</span>
-                <span class="value" id="sTxt"></span>
+              <div class="label">จาก</div>
+              <div class="person">
+                <div class="avatar" id="senderAvatar">ผ</div>
+                <div>
+                  <div class="pname" id="senderNameOut"></div>
+                  <div class="pacc" id="senderAccOut"></div>
+                </div>
+              </div>
+              <div></div>
             </div>
+
+            <div class="divider"></div>
+
             <div class="row">
-                <span class="label">ถึง</span>
-                <span class="value" id="rTxt"></span>
+              <div class="label">ไปยัง</div>
+              <div class="person">
+                <div class="avatar" id="receiverAvatar">ร</div>
+                <div>
+                  <div class="pname" id="receiverNameOut"></div>
+                  <div class="pacc" id="receiverAccOut"></div>
+                </div>
+              </div>
+              <div></div>
             </div>
 
-            <div class="amount-wrap">
-                <span class="amt-big" id="aTxt"></span>
-                <span class="curr-name" id="cTxt"></span>
+            <div class="divider"></div>
+
+            <div class="moneyline">
+              <div class="label">จำนวนเงิน</div>
+              <div class="mvalue" id="amountOut">5,454.00</div>
             </div>
 
-            <div class="row">
-                <span class="label">วันที่/เวลา</span>
-                <span class="value" id="timeTxt"></span>
+            <div class="divider"></div>
+
+            <div class="moneyline fee">
+              <div class="label">ค่าธรรมเนียม</div>
+              <div class="mvalue" id="feeOut">0.00 บาท</div>
             </div>
 
-            <div id="qrcode"></div>
-            <div class="watermark">Verified by SAMI Engine</div>
+            <div class="divider"></div>
+
+            <div class="qrwrap">
+              <div id="qrcode"></div>
+            </div>
+
+            <div class="footer-art">
+              <div class="hill"></div>
+              <div class="field"></div>
+              <div class="whale">
+                <div class="eye"></div>
+                <div class="blush"></div>
+              </div>
+            </div>
+          </div>
         </div>
-    </div>
+      </div>
+    </section>
+  </div>
 
-    <script>
-        const qrcode = new QRCode(document.getElementById("qrcode"), {
-            width: 80, height: 80, colorDark : "#fb6f92", colorLight : "#ffffff"
+  <script>
+    const themes = [
+      {name:'ม่วงเมฆ',    c1:'#6f2dbd', c2:'#9d4edd', accent:'#ffd166'},
+      {name:'ชมพูขนม',    c1:'#d63384', c2:'#ff85c1', accent:'#ffe066'},
+      {name:'ฟ้านม',      c1:'#277da1', c2:'#4cc9f0', accent:'#fdf0d5'},
+      {name:'เขียวมิ้น',  c1:'#2a9d8f', c2:'#6ee7b7', accent:'#fef3c7'},
+      {name:'ส้มพีช',     c1:'#e76f51', c2:'#ffb4a2', accent:'#fff3b0'},
+      {name:'แดงเชอร์รี่', c1:'#b5179e', c2:'#f72585', accent:'#ffd6a5'},
+      {name:'ครามดาว',    c1:'#3a0ca3', c2:'#4361ee', accent:'#caf0f8'},
+      {name:'ลาเวนเดอร์', c1:'#7b2cbf', c2:'#c77dff', accent:'#fff1e6'},
+      {name:'โกโก้ครีม',  c1:'#6d4c41', c2:'#bc8a5f', accent:'#ffe8d6'},
+      {name:'เลมอนโซดา',  c1:'#7cb518', c2:'#b7e4c7', accent:'#fff3bf'},
+      {name:'เทาเงิน',     c1:'#495057', c2:'#adb5bd', accent:'#f1f3f5'},
+      {name:'โอเชียน',     c1:'#005f73', c2:'#0a9396', accent:'#e9d8a6'},
+      {name:'ซันเซ็ต',     c1:'#9d0208', c2:'#f48c06', accent:'#ffecd1'},
+      {name:'พลัมโรส',     c1:'#8e44ad', c2:'#ff99c8', accent:'#ffe5ec'},
+      {name:'เทอร์ควอยซ์', c1:'#0081a7', c2:'#00afb9', accent:'#fed9b7'}
+    ];
+
+    const els = {
+      bankName: document.getElementById('bankName'),
+      senderName: document.getElementById('senderName'),
+      senderAcc: document.getElementById('senderAcc'),
+      receiverName: document.getElementById('receiverName'),
+      receiverAcc: document.getElementById('receiverAcc'),
+      amount: document.getElementById('amount'),
+      fee: document.getElementById('fee'),
+      refId: document.getElementById('refId'),
+      datetime: document.getElementById('datetime'),
+      qrText: document.getElementById('qrText'),
+      bankNameOut: document.getElementById('bankNameOut'),
+      senderNameOut: document.getElementById('senderNameOut'),
+      senderAccOut: document.getElementById('senderAccOut'),
+      receiverNameOut: document.getElementById('receiverNameOut'),
+      receiverAccOut: document.getElementById('receiverAccOut'),
+      amountOut: document.getElementById('amountOut'),
+      feeOut: document.getElementById('feeOut'),
+      dateOut: document.getElementById('dateOut'),
+      refOut: document.getElementById('refOut'),
+      senderAvatar: document.getElementById('senderAvatar'),
+      receiverAvatar: document.getElementById('receiverAvatar'),
+      themeGrid: document.getElementById('themeGrid'),
+      themeNameOut: document.getElementById('themeNameOut'),
+      saveBtn: document.getElementById('saveBtn'),
+      randomBtn: document.getElementById('randomBtn')
+    };
+
+    let qr;
+    let currentThemeIndex = 0;
+
+    function pad(n){ return String(n).padStart(2,'0'); }
+
+    function formatMoney(v){
+      const num = Number(v || 0);
+      return num.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+    }
+
+    function formatThaiDate(dateStr){
+      const d = new Date(dateStr);
+      if (Number.isNaN(d.getTime())) return '';
+      const months = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+      const day = pad(d.getDate());
+      const month = months[d.getMonth()];
+      const year = d.getFullYear() + 543;
+      const hh = pad(d.getHours());
+      const mm = pad(d.getMinutes());
+      return `${day} ${month} ${year} - ${hh}:${mm}`;
+    }
+
+    function makeRef(){
+      const d = new Date();
+      const base = `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
+      const rand = Math.random().toString(36).slice(2,8).toUpperCase();
+      return `${base}${rand}`;
+    }
+
+    function initials(text){
+      const t = (text || '').trim();
+      return t ? t.charAt(0) : '•';
+    }
+
+    function applyTheme(index){
+      currentThemeIndex = index;
+      const t = themes[index];
+      document.documentElement.style.setProperty('--theme-1', t.c1);
+      document.documentElement.style.setProperty('--theme-2', t.c2);
+      document.documentElement.style.setProperty('--theme-accent', t.accent);
+      document.documentElement.style.setProperty('--theme-name', `"${t.name}"`);
+      els.themeNameOut.textContent = `ธีม ${t.name}`;
+
+      document.querySelectorAll('.theme-btn').forEach((btn, i) => {
+        btn.classList.toggle('active', i === index);
+      });
+
+      updateQr();
+    }
+
+    function updateQr(){
+      const qrBox = document.getElementById('qrcode');
+      qrBox.innerHTML = '';
+      const theme = themes[currentThemeIndex];
+      const text = els.qrText.value.trim() || [
+        els.bankName.value.trim(),
+        els.senderName.value.trim(),
+        els.receiverName.value.trim(),
+        `AMT:${formatMoney(els.amount.value)}`,
+        `REF:${els.refId.value.trim() || ''}`
+      ].join(' | ');
+      qr = new QRCode(qrBox, {
+        text,
+        width: 72,
+        height: 72,
+        colorDark: theme.c1,
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }
+
+    function updateSlip(){
+      els.bankNameOut.textContent = els.bankName.value.trim() || 'ธนาคาร ปลาวาฬขาว';
+      els.senderNameOut.textContent = els.senderName.value.trim() || '-';
+      els.senderAccOut.textContent = els.senderAcc.value.trim() || '-';
+      els.receiverNameOut.textContent = els.receiverName.value.trim() || '-';
+      els.receiverAccOut.textContent = els.receiverAcc.value.trim() || '-';
+      els.amountOut.textContent = formatMoney(els.amount.value);
+      els.feeOut.textContent = `${formatMoney(els.fee.value)} บาท`;
+      els.dateOut.textContent = formatThaiDate(els.datetime.value);
+      els.refOut.textContent = `รหัสอ้างอิง : ${els.refId.value.trim() || '-'}`;
+      els.senderAvatar.textContent = initials(els.senderName.value);
+      els.receiverAvatar.textContent = initials(els.receiverName.value);
+      updateQr();
+    }
+
+    function setNow(){
+      const d = new Date();
+      const local = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+      els.datetime.value = local.toISOString().slice(0,16);
+    }
+
+    function buildThemeButtons(){
+      themes.forEach((t, i) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'theme-btn';
+        btn.title = t.name;
+        btn.style.background = `linear-gradient(135deg, ${t.c1}, ${t.c2})`;
+        btn.addEventListener('click', () => applyTheme(i));
+        els.themeGrid.appendChild(btn);
+      });
+    }
+
+    async function savePng(){
+      const btn = els.saveBtn;
+      const old = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = 'กำลังบันทึก...';
+      try{
+        const canvas = await html2canvas(document.getElementById('slipCard'), {
+          scale: 3,
+          useCORS: true,
+          backgroundColor: null
         });
+        const link = document.createElement('a');
+        link.download = `cute-slip-${Date.now()}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }catch(err){
+        alert('บันทึกไม่สำเร็จ: ' + err.message);
+      }finally{
+        btn.disabled = false;
+        btn.textContent = old;
+      }
+    }
 
-        function draw() {
-            document.getElementById('sTxt').innerText = document.getElementById('sIn').value;
-            document.getElementById('rTxt').innerText = document.getElementById('rIn').value;
-            document.getElementById('aTxt').innerText = parseFloat(document.getElementById('aIn').value).toLocaleString();
-            document.getElementById('cTxt').innerText = document.getElementById('cIn').value;
-            
-            const now = new Date();
-            document.getElementById('timeTxt').innerText = now.toLocaleString('th-TH', { 
-                day: '2-digit', month: 'short', year: '2-digit', hour: '2-digit', minute: '2-digit' 
-            });
+    function randomizeRef(){
+      els.refId.value = makeRef();
+      if(!els.qrText.value.trim()){
+        updateSlip();
+      }else{
+        updateSlip();
+      }
+    }
 
-            qrcode.makeCode("SAMI-" + Date.now());
-        }
+    buildThemeButtons();
+    setNow();
+    els.refId.value = makeRef();
+    applyTheme(0);
+    updateSlip();
 
-        async function saveSlip() {
-            const slip = document.getElementById('target-slip');
-            const btn = document.querySelector('.btn-save');
-            
-            btn.innerText = "กำลังประมวลผล...";
-            btn.disabled = true;
+    [
+      els.bankName, els.senderName, els.senderAcc, els.receiverName, els.receiverAcc,
+      els.amount, els.fee, els.refId, els.datetime, els.qrText
+    ].forEach(el => el.addEventListener('input', updateSlip));
 
-            // ใช้ html2canvas จับภาพ
-            const canvas = await html2canvas(slip, {
-                backgroundColor: null,
-                scale: 2, // เพิ่มความชัด
-                useCORS: true
-            });
-
-            // สร้างลิงก์ดาวน์โหลด
-            const link = document.createElement('a');
-            link.download = `Cute-Slip-${Date.now()}.png`;
-            link.href = canvas.toDataURL("image/png");
-            link.click();
-
-            btn.innerText = "💾 บันทึกเป็นรูปภาพ (PNG)";
-            btn.disabled = false;
-        }
-
-        draw();
-    </script>
+    els.saveBtn.addEventListener('click', savePng);
+    els.randomBtn.addEventListener('click', randomizeRef);
+  </script>
 </body>
 </html>
