@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cute Slip Generator - Save PNG</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        :root {
+            --primary-pink: #ffafcc;
+            --dark-pink: #fb6f92;
+            --bg-gradient: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        }
+
+        body {
+            font-family: 'Kanit', sans-serif;
+            background: var(--bg-gradient);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            color: #4a4a4a;
+        }
+
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .input-group { margin-bottom: 12px; }
+        label { display: block; font-size: 0.8rem; color: #888; margin-bottom: 4px; }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #eee;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+
+        /* ปุ่ม Save */
+        .btn-save {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--dark-pink);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-family: 'Kanit', sans-serif;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(251, 111, 146, 0.3);
+        }
+        .btn-save:hover { background-color: #ff4d6d; transform: translateY(-2px); }
+        .btn-save:active { transform: translateY(0); }
+
+        /* การตกแต่งสลิป */
+        #slip-area {
+            background: transparent;
+            padding: 15px; /* พื้นที่เผื่อ shadow ตอนเซฟ */
+        }
+
+        .slip-card {
+            width: 330px;
+            background: white;
+            border-radius: 25px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .header { text-align: center; margin-bottom: 20px; }
+        .header h2 { margin: 0; color: var(--dark-pink); letter-spacing: 1px; }
+
+        .row { display: flex; justify-content: space-between; margin-bottom: 12px; }
+        .label { color: #aaa; font-size: 0.85rem; }
+        .value { font-weight: 500; }
+
+        .amount-wrap {
+            background: #fff5f8;
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 15px 0;
+        }
+        .amt-big { font-size: 2rem; font-weight: bold; color: #ff4d6d; }
+        .curr-name { color: var(--dark-pink); display: block; }
+
+        #qrcode {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+            padding: 10px;
+        }
+
+        .watermark {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #eee;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="controls">
+        <h3 style="margin-top:0; color:var(--dark-pink)">Slip Maker ✨</h3>
+        <div class="input-group">
+            <label>ผู้โอน / ผู้รับ</label>
+            <div style="display:flex; gap:5px;">
+                <input type="text" id="sIn" value="นำชัย" oninput="draw()">
+                <input type="text" id="rIn" value="หวานใจ" oninput="draw()">
+            </div>
+        </div>
+        <div class="input-group">
+            <label>จำนวนเงิน & สกุลเงิน</label>
+            <div style="display:flex; gap:5px;">
+                <input type="number" id="aIn" value="999" oninput="draw()" style="flex:2">
+                <select id="cIn" onchange="draw()" style="flex:1">
+                    <option value="เบรี">เบรี</option>
+                    <option value="บาท">บาท</option>
+                    <option value="ดอลลาร์">ดอลลาร์</option>
+                    <option value="ชิ้น">ชิ้น (ฟีลน่ารัก)</option>
+                </select>
+            </div>
+        </div>
+        <button class="btn-save" onclick="saveSlip()">💾 บันทึกเป็นรูปภาพ (PNG)</button>
+    </div>
+
+    <div id="slip-area">
+        <div class="slip-card" id="target-slip">
+            <div class="header">
+                <div style="color: #2ecc71; font-size: 0.8rem;">● โอนเงินสำเร็จ</div>
+                <h2>CUTE TRANSFER</h2>
+            </div>
+
+            <div class="row">
+                <span class="label">จาก</span>
+                <span class="value" id="sTxt"></span>
+            </div>
+            <div class="row">
+                <span class="label">ถึง</span>
+                <span class="value" id="rTxt"></span>
+            </div>
+
+            <div class="amount-wrap">
+                <span class="amt-big" id="aTxt"></span>
+                <span class="curr-name" id="cTxt"></span>
+            </div>
+
+            <div class="row">
+                <span class="label">วันที่/เวลา</span>
+                <span class="value" id="timeTxt"></span>
+            </div>
+
+            <div id="qrcode"></div>
+            <div class="watermark">Verified by SAMI Engine</div>
+        </div>
+    </div>
+
+    <script>
+        const qrcode = new QRCode(document.getElementById("qrcode"), {
+            width: 80, height: 80, colorDark : "#fb6f92", colorLight : "#ffffff"
+        });
+
+        function draw() {
+            document.getElementById('sTxt').innerText = document.getElementById('sIn').value;
+            document.getElementById('rTxt').innerText = document.getElementById('rIn').value;
+            document.getElementById('aTxt').innerText = parseFloat(document.getElementById('aIn').value).toLocaleString();
+            document.getElementById('cTxt').innerText = document.getElementById('cIn').value;
+            
+            const now = new Date();
+            document.getElementById('timeTxt').innerText = now.toLocaleString('th-TH', { 
+                day: '2-digit', month: 'short', year: '2-digit', hour: '2-digit', minute: '2-digit' 
+            });
+
+            qrcode.makeCode("SAMI-" + Date.now());
+        }
+
+        async function saveSlip() {
+            const slip = document.getElementById('target-slip');
+            const btn = document.querySelector('.btn-save');
+            
+            btn.innerText = "กำลังประมวลผล...";
+            btn.disabled = true;
+
+            // ใช้ html2canvas จับภาพ
+            const canvas = await html2canvas(slip, {
+                backgroundColor: null,
+                scale: 2, // เพิ่มความชัด
+                useCORS: true
+            });
+
+            // สร้างลิงก์ดาวน์โหลด
+            const link = document.createElement('a');
+            link.download = `Cute-Slip-${Date.now()}.png`;
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+
+            btn.innerText = "💾 บันทึกเป็นรูปภาพ (PNG)";
+            btn.disabled = false;
+        }
+
+        draw();
+    </script>
+</body>
+</html>
