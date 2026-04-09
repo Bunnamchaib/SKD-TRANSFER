@@ -8,19 +8,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     :root{
       --theme-1:#7b2cbf;
       --theme-2:#9d4edd;
-      --theme-soft:#f6efff;
-      --theme-accent:#ffd166;
-      --ok:#12c56a;
       --ink:#222831;
       --muted:#8d92a6;
       --line:#ebedf4;
       --paper:#ffffff;
-      --bg:#f4f5fb;
     }
     *{box-sizing:border-box}
     body{
@@ -38,51 +33,25 @@
       max-width:1180px;
       margin:0 auto;
       display:grid;
-      grid-template-columns: 390px minmax(320px, 1fr);
+      grid-template-columns:390px minmax(320px,1fr);
       gap:24px;
       align-items:start;
     }
     .panel,.phone-shell{
-      background:rgba(255,255,255,.78);
-      backdrop-filter: blur(14px);
-      border:1px solid rgba(255,255,255,.75);
+      background:rgba(255,255,255,.80);
+      backdrop-filter:blur(14px);
+      border:1px solid rgba(255,255,255,.85);
       box-shadow:0 16px 50px rgba(44,62,80,.10);
       border-radius:28px;
     }
-    .panel{
-      padding:22px;
-      position:sticky;
-      top:18px;
-    }
-    .panel h1{
-      margin:0 0 6px;
-      font-size:1.45rem;
-      line-height:1.2;
-    }
-    .sub{
-      margin:0 0 18px;
-      color:var(--muted);
-      font-size:.95rem;
-    }
-    .grid2{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-    }
-    .grid3{
-      display:grid;
-      grid-template-columns:1.15fr .85fr .9fr;
-      gap:12px;
-    }
+    .panel{padding:22px;position:sticky;top:18px}
+    .panel h1{margin:0 0 6px;font-size:1.45rem;line-height:1.2}
+    .sub{margin:0 0 18px;color:var(--muted);font-size:.95rem}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .grid3{display:grid;grid-template-columns:1.15fr .85fr .9fr;gap:12px}
     .group{margin-bottom:12px}
-    .group label{
-      display:block;
-      font-size:.86rem;
-      color:#5e667a;
-      margin-bottom:6px;
-      font-weight:500;
-    }
-    input, select, textarea{
+    .group label{display:block;font-size:.86rem;color:#5e667a;margin-bottom:6px;font-weight:500}
+    input,select{
       width:100%;
       border:1px solid #dde3ef;
       background:#fff;
@@ -94,98 +63,45 @@
       outline:none;
       transition:.2s ease;
     }
-    input:focus, select:focus, textarea:focus{
+    input:focus,select:focus{
       border-color:var(--theme-2);
       box-shadow:0 0 0 4px rgba(157,78,221,.12);
     }
-    .theme-grid{
-      display:grid;
-      grid-template-columns:repeat(5,1fr);
-      gap:10px;
-      margin-top:8px;
-    }
+    .theme-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:8px}
     .theme-btn{
-      height:42px;
-      border:none;
-      border-radius:14px;
-      cursor:pointer;
-      position:relative;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.65), 0 8px 20px rgba(0,0,0,.08);
+      height:42px;border:none;border-radius:14px;cursor:pointer;position:relative;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.65),0 8px 20px rgba(0,0,0,.08);
       transition:.18s ease;
     }
     .theme-btn:hover{transform:translateY(-2px)}
     .theme-btn.active::after{
-      content:"✓";
-      position:absolute;
-      right:8px;
-      bottom:7px;
-      width:18px;height:18px;
-      display:grid;place-items:center;
-      border-radius:50%;
-      background:#fff;
-      color:#222;
-      font-size:.78rem;
-      font-weight:700;
+      content:"✓";position:absolute;right:8px;bottom:7px;width:18px;height:18px;display:grid;place-items:center;
+      border-radius:50%;background:#fff;color:#222;font-size:.78rem;font-weight:700;
     }
-    .actions{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-      margin-top:16px;
-    }
+    .actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
     button{
-      border:none;
-      border-radius:16px;
-      padding:13px 16px;
-      font-family:inherit;
-      font-size:1rem;
-      font-weight:600;
-      cursor:pointer;
-      transition:.2s ease;
+      border:none;border-radius:16px;padding:13px 16px;font-family:inherit;font-size:1rem;font-weight:600;
+      cursor:pointer;transition:.2s ease;
     }
-    .btn-primary{
-      background:linear-gradient(135deg,var(--theme-1),var(--theme-2));
-      color:#fff;
-      box-shadow:0 10px 24px rgba(90,24,154,.24);
-    }
-    .btn-secondary{
-      background:#eef2fb;
-      color:#384255;
-    }
+    .btn-primary{background:linear-gradient(135deg,var(--theme-1),var(--theme-2));color:#fff;box-shadow:0 10px 24px rgba(90,24,154,.24)}
+    .btn-secondary{background:#eef2fb;color:#384255}
     button:hover{transform:translateY(-1px)}
-    .phone-shell{
-      padding:18px;
-      display:flex;
-      justify-content:center;
-      align-items:flex-start;
-    }
-    #captureArea{
-      padding:10px;
-      background:transparent;
-    }
+    .phone-shell{padding:18px;display:flex;justify-content:center;align-items:flex-start}
+    #captureArea{padding:10px;background:transparent}
     .slip{
-      width:390px;
-      background:var(--paper);
-      border-radius:0 0 26px 26px;
-      overflow:hidden;
-      box-shadow:0 22px 55px rgba(64,55,90,.16);
-      position:relative;
+      width:390px;background:var(--paper);border-radius:0 0 26px 26px;overflow:hidden;
+      box-shadow:0 22px 55px rgba(64,55,90,.16);position:relative;
     }
     .slip-top{
       background:
         radial-gradient(circle at 18% 25%, rgba(255,255,255,.18) 0 28px, transparent 29px),
         radial-gradient(circle at 80% 18%, rgba(255,255,255,.14) 0 34px, transparent 35px),
         linear-gradient(180deg,var(--theme-1) 0%, var(--theme-2) 100%);
-      height:132px;
-      position:relative;
-      overflow:hidden;
-      color:#fff;
+      height:132px;position:relative;overflow:hidden;color:#fff;
     }
-    .cloud{position:absolute; opacity:.28; background:#fff; filter: blur(.2px);}
+    .cloud{position:absolute;opacity:.28;background:#fff}
     .cloud.c1{width:86px;height:28px;left:28px;top:24px;border-radius:50px}
-    .cloud.c1::before,.cloud.c1::after,.cloud.c2::before,.cloud.c2::after,.cloud.c3::before,.cloud.c3::after{
-      content:""; position:absolute; background:#fff; border-radius:50%;
-    }
+    .cloud.c1::before,.cloud.c1::after,.cloud.c2::before,.cloud.c2::after,.cloud.c3::before,.cloud.c3::after{content:"";position:absolute;background:#fff;border-radius:50%}
     .cloud.c1::before{width:30px;height:30px;left:8px;top:-10px}
     .cloud.c1::after{width:34px;height:34px;left:37px;top:-14px}
     .cloud.c2{width:110px;height:34px;right:18px;top:20px;border-radius:50px}
@@ -194,244 +110,74 @@
     .cloud.c3{width:64px;height:22px;left:112px;top:58px;border-radius:50px}
     .cloud.c3::before{width:24px;height:24px;left:8px;top:-9px}
     .cloud.c3::after{width:26px;height:26px;left:30px;top:-11px}
-    .bankbar{
-      position:relative;
-      z-index:2;
-      display:flex;
-      align-items:center;
-      gap:12px;
-      padding:18px 20px 0;
-    }
+    .bankbar{position:relative;z-index:2;display:flex;align-items:center;gap:12px;padding:18px 20px 0}
     .banklogo{
-      width:42px;height:42px;border-radius:16px;
-      background:linear-gradient(135deg,#fff,rgba(255,255,255,.78));
-      display:grid;place-items:center;
-      color:var(--theme-1);
-      font-size:1.35rem;
-      box-shadow:0 10px 24px rgba(0,0,0,.12);
-      font-weight:700;
+      width:42px;height:42px;border-radius:16px;background:linear-gradient(135deg,#fff,rgba(255,255,255,.78));
+      display:grid;place-items:center;color:var(--theme-1);font-size:1.35rem;box-shadow:0 10px 24px rgba(0,0,0,.12);font-weight:700;
     }
     .bankmeta{min-width:0}
-    .bankname{
-      font-size:1.28rem;
-      font-weight:700;
-      line-height:1.1;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      max-width:250px;
-    }
-    .banktheme{
-      font-size:.78rem;
-      opacity:.85;
-      font-weight:300;
-      letter-spacing:.2px;
-    }
+    .bankname{font-size:1.28rem;font-weight:700;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:250px}
+    .banktheme{font-size:.78rem;opacity:.85;font-weight:300;letter-spacing:.2px}
     .sheet{
       background:
         linear-gradient(rgba(255,255,255,.94),rgba(255,255,255,.96)),
         radial-gradient(circle at 12px 12px, rgba(123,44,191,.06) 0 2px, transparent 3px);
-      background-size:auto, 24px 24px;
-      padding:20px 0 0;
-      position:relative;
-      min-height:650px;
+      background-size:auto,24px 24px;
+      padding:20px 0 0;position:relative;min-height:650px;
     }
-    .status{
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:8px;
-      padding:2px 24px 14px;
-      text-align:center;
-    }
+    .status{display:flex;flex-direction:column;align-items:center;gap:8px;padding:2px 24px 14px;text-align:center}
     .okbadge{
-      width:68px;height:68px;border-radius:50%;
-      display:grid;place-items:center;
-      background:linear-gradient(180deg,#20d97c,#10b860);
-      color:#fff;
-      font-size:2rem;
-      box-shadow:0 12px 25px rgba(16,184,96,.22);
+      width:68px;height:68px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(180deg,#20d97c,#10b860);
+      color:#fff;font-size:2rem;box-shadow:0 12px 25px rgba(16,184,96,.22)
     }
-    .oktext{
-      color:#11a957;
-      font-size:2rem;
-      font-weight:500;
-      line-height:1;
-    }
+    .oktext{color:#11a957;font-size:2rem;font-weight:500;line-height:1}
     .dt{color:#6f7483;font-size:1.02rem}
     .ref{color:#9a9fb0;font-size:.92rem}
     .divider{height:1px;background:var(--line);margin:14px 0}
-    .row{
-      display:grid;
-      grid-template-columns:62px 1fr auto;
-      gap:12px;
-      align-items:center;
-      padding:0 20px;
-    }
-    .label{
-      color:#2f3441;
-      font-size:1.02rem;
-      font-weight:500;
-    }
-    .person{
-      display:grid;
-      grid-template-columns:38px 1fr;
-      gap:12px;
-      align-items:center;
-      min-width:0;
-    }
+    .row{display:grid;grid-template-columns:62px 1fr auto;gap:12px;align-items:center;padding:0 20px}
+    .label{color:#2f3441;font-size:1.02rem;font-weight:500}
+    .person{display:grid;grid-template-columns:38px 1fr;gap:12px;align-items:center;min-width:0}
     .avatar{
-      width:38px;height:38px;border-radius:50%;
-      display:grid;place-items:center;
-      color:#fff;
-      font-size:1rem;
-      font-weight:700;
-      background:linear-gradient(135deg,var(--theme-1),var(--theme-2));
-      box-shadow:0 8px 18px rgba(123,44,191,.24);
+      width:38px;height:38px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:1rem;font-weight:700;
+      background:linear-gradient(135deg,var(--theme-1),var(--theme-2));box-shadow:0 8px 18px rgba(123,44,191,.24)
     }
-    .pname{
-      font-size:1.06rem;
-      font-weight:500;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
-    .pacc{
-      color:#8f95a6;
-      font-size:1rem;
-      margin-top:2px;
-      letter-spacing:.3px;
-    }
-    .moneyline{
-      padding:0 20px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      min-height:52px;
-      gap:10px;
-      font-size:1.08rem;
-    }
-    .moneyline .mvalue{
-      font-size:2rem;
-      font-weight:600;
-      color:#2b3140;
-      text-align:right;
-    }
-    .moneyline.fee .mvalue{
-      font-size:1.4rem;
-      font-weight:500;
-      color:#384255;
-    }
-    .inline-mut{
-      color:#96a0b2;
-      font-size:.9rem;
-    }
-    .qrwrap{
-      display:flex;
-      justify-content:center;
-      padding:10px 20px 8px;
-    }
+    .pname{font-size:1.06rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .pacc{color:#8f95a6;font-size:1rem;margin-top:2px;letter-spacing:.3px}
+    .moneyline{padding:0 20px;display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:52px;font-size:1.08rem}
+    .moneyline .mvalue{font-size:2rem;font-weight:600;color:#2b3140;text-align:right}
+    .moneyline.fee .mvalue{font-size:1.4rem;font-weight:500;color:#384255}
+    .qrwrap{display:flex;justify-content:center;padding:10px 20px 8px}
     #qrcode{
-      width:92px;
-      min-height:92px;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      background:#fff;
-      padding:10px;
-      border-radius:18px;
-      box-shadow:0 10px 26px rgba(0,0,0,.06);
-      overflow:hidden;
+      width:92px;height:92px;background:#fff;padding:10px;border-radius:18px;box-shadow:0 10px 26px rgba(0,0,0,.06);
+      display:flex;justify-content:center;align-items:center;overflow:hidden;
     }
-    #qrcode img, #qrcode canvas{
-      display:block !important;
-      width:72px !important;
-      height:72px !important;
-    }
+    #qrcode svg{width:72px;height:72px;display:block}
     .footer-art{
-      position:relative;
-      height:118px;
-      margin-top:10px;
-      background:
-        linear-gradient(180deg, rgba(255,214,214,0) 0%, rgba(255,222,214,.66) 100%);
+      position:relative;height:118px;margin-top:10px;
+      background:linear-gradient(180deg, rgba(255,214,214,0) 0%, rgba(255,222,214,.66) 100%);
       overflow:hidden;
     }
-    .hill{
-      position:absolute; left:-10%; right:-10%; bottom:0;
-      height:60px;
-      background:linear-gradient(180deg,#b7a0db,#8d75bf);
-      border-radius:50% 50% 0 0 / 100% 100% 0 0;
-      opacity:.56;
-    }
-    .field{
-      position:absolute; left:0; right:0; bottom:0; height:74px;
-      background:
-        repeating-linear-gradient(90deg, rgba(255,255,255,.16) 0 2px, transparent 2px 10px),
-        linear-gradient(180deg,#8b6ec0,#7e5bb9 45%, #68478f 100%);
-    }
+    .hill{position:absolute;left:-10%;right:-10%;bottom:0;height:60px;background:linear-gradient(180deg,#b7a0db,#8d75bf);border-radius:50% 50% 0 0 / 100% 100% 0 0;opacity:.56}
+    .field{position:absolute;left:0;right:0;bottom:0;height:74px;background:repeating-linear-gradient(90deg, rgba(255,255,255,.16) 0 2px, transparent 2px 10px),linear-gradient(180deg,#8b6ec0,#7e5bb9 45%, #68478f 100%)}
     .whale{
-      position:absolute;
-      left:50%; bottom:10px; transform:translateX(-50%);
-      width:88px; height:52px;
-      background:linear-gradient(180deg,#fff3f7,#ffd9e7);
-      border-radius:50px 44px 34px 34px;
-      box-shadow:0 10px 25px rgba(0,0,0,.10);
+      position:absolute;left:50%;bottom:10px;transform:translateX(-50%);
+      width:88px;height:52px;background:linear-gradient(180deg,#fff3f7,#ffd9e7);border-radius:50px 44px 34px 34px;box-shadow:0 10px 25px rgba(0,0,0,.10)
     }
-    .whale:before{
-      content:"";
-      position:absolute; right:-10px; top:15px;
-      width:20px;height:18px;
-      background:linear-gradient(180deg,#fff3f7,#ffd9e7);
-      clip-path:polygon(0 50%,100% 0,100% 100%);
-    }
-    .whale:after{
-      content:"";
-      position:absolute; left:14px; top:-10px;
-      width:18px;height:18px;
-      background:linear-gradient(180deg,#fff3f7,#ffd9e7);
-      border-radius:0 100% 0 100%;
-      transform:rotate(-25deg);
-    }
-    .eye{
-      position:absolute; width:4px;height:4px;border-radius:50%;
-      background:#57446f; left:24px; top:24px;
-    }
-    .blush{
-      position:absolute; width:11px;height:6px;border-radius:10px;
-      background:rgba(255,120,160,.28); left:18px; top:28px;
-    }
-    .note{
-      font-size:.8rem;
-      color:#8b90a0;
-      margin-top:14px;
-      line-height:1.45;
-      background:#f6f8fe;
-      border:1px dashed #dde4f1;
-      padding:10px 12px;
-      border-radius:14px;
-    }
-    @media (max-width: 980px){
-      .wrap{grid-template-columns:1fr}
-      .panel{position:static}
-      .phone-shell{padding:14px}
-    }
-    @media (max-width: 640px){
-      .grid3{grid-template-columns:1fr}
-    }
-    @media (max-width: 520px){
-      body{padding:12px}
-      .panel{padding:16px;border-radius:22px}
-      .slip{width:100%}
-      #captureArea{width:100%;display:flex;justify-content:center}
-      .actions,.grid2{grid-template-columns:1fr}
-    }
+    .whale:before{content:"";position:absolute;right:-10px;top:15px;width:20px;height:18px;background:linear-gradient(180deg,#fff3f7,#ffd9e7);clip-path:polygon(0 50%,100% 0,100% 100%)}
+    .whale:after{content:"";position:absolute;left:14px;top:-10px;width:18px;height:18px;background:linear-gradient(180deg,#fff3f7,#ffd9e7);border-radius:0 100% 0 100%;transform:rotate(-25deg)}
+    .eye{position:absolute;width:4px;height:4px;border-radius:50%;background:#57446f;left:24px;top:24px}
+    .blush{position:absolute;width:11px;height:6px;border-radius:10px;background:rgba(255,120,160,.28);left:18px;top:28px}
+    .note{font-size:.8rem;color:#8b90a0;margin-top:14px;line-height:1.45;background:#f6f8fe;border:1px dashed #dde4f1;padding:10px 12px;border-radius:14px}
+    @media (max-width:980px){.wrap{grid-template-columns:1fr}.panel{position:static}.phone-shell{padding:14px}}
+    @media (max-width:640px){.grid3{grid-template-columns:1fr}}
+    @media (max-width:520px){body{padding:12px}.panel{padding:16px;border-radius:22px}.slip{width:100%}#captureArea{width:100%;display:flex;justify-content:center}.actions,.grid2{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
   <div class="wrap">
     <section class="panel">
       <h1>Slip Generator น่ารัก</h1>
-      <p class="sub">ใช้ UI เดิมเป็นแม่แบบ แล้วเพิ่มให้แก้ทุกอย่างแบบ realtime พร้อมสกุลเงินหลายแบบ</p>
+      <p class="sub">แก้ให้ข้อมูลทุกช่องเปลี่ยนบนสลิปแบบ realtime แล้ว รวมรหัสอ้างอิงและ QR</p>
 
       <div class="group">
         <label for="bankName">ชื่อธนาคาร</label>
@@ -441,7 +187,7 @@
       <div class="grid2">
         <div class="group">
           <label for="senderName">ชื่อผู้โอน</label>
-          <input id="senderName" value="หกดเกด้เดด่ดเ่เ่เ่เ่เ่" />
+          <input id="senderName" value="บุญนำชัย บัวใหญ่" />
         </div>
         <div class="group">
           <label for="senderAcc">เลขบัญชีผู้โอน</label>
@@ -452,7 +198,7 @@
       <div class="grid2">
         <div class="group">
           <label for="receiverName">ชื่อผู้รับ</label>
-          <input id="receiverName" value="ปกดทืเดาืทดเสิมวด" />
+          <input id="receiverName" value="สมหมาย" />
         </div>
         <div class="group">
           <label for="receiverAcc">เลขบัญชีผู้รับ</label>
@@ -463,12 +209,12 @@
       <div class="grid3">
         <div class="group">
           <label for="amount">จำนวนเงิน</label>
-          <input id="amount" type="number" step="0.01" value="5454" />
+          <input id="amount" type="number" step="0.01" value="8595" />
         </div>
         <div class="group">
           <label for="currency">หน่วยเงิน</label>
           <select id="currency">
-            <option value="บาท" selected>บาท</option>
+            <option value="บาท">บาท</option>
             <option value="เบรี">เบรี</option>
             <option value="ดอลลาร์">ดอลลาร์</option>
             <option value="เยน">เยน</option>
@@ -513,7 +259,7 @@
       </div>
 
       <div class="note">
-        ฟอร์มทุกช่องจะขึ้นบนสลิปแบบ realtime ทันที รวมทั้งรหัสธุรกรรมและ QR code
+        เวอร์ชันนี้ตัด dependency QR เดิมออก แล้วใช้ QR-style SVG ในไฟล์เดียว ทำให้แสดงผลแน่นอนกว่าเวลาเปิดเป็นไฟล์ HTML ตรงๆ
       </div>
     </section>
 
@@ -524,7 +270,6 @@
             <div class="cloud c1"></div>
             <div class="cloud c2"></div>
             <div class="cloud c3"></div>
-
             <div class="bankbar">
               <div class="banklogo">🐋</div>
               <div class="bankmeta">
@@ -538,7 +283,7 @@
             <div class="status">
               <div class="okbadge">✓</div>
               <div class="oktext">โอนเงินสำเร็จ</div>
-              <div class="dt" id="dateOut"></div>
+              <div class="dt" id="dateOut">-</div>
               <div class="ref" id="refOut">รหัสอ้างอิง : -</div>
             </div>
 
@@ -547,7 +292,7 @@
             <div class="row">
               <div class="label">จาก</div>
               <div class="person">
-                <div class="avatar" id="senderAvatar">ผ</div>
+                <div class="avatar" id="senderAvatar">บ</div>
                 <div>
                   <div class="pname" id="senderNameOut">-</div>
                   <div class="pacc" id="senderAccOut">-</div>
@@ -561,7 +306,7 @@
             <div class="row">
               <div class="label">ไปยัง</div>
               <div class="person">
-                <div class="avatar" id="receiverAvatar">ร</div>
+                <div class="avatar" id="receiverAvatar">ส</div>
                 <div>
                   <div class="pname" id="receiverNameOut">-</div>
                   <div class="pacc" id="receiverAccOut">-</div>
@@ -574,7 +319,7 @@
 
             <div class="moneyline">
               <div class="label">จำนวนเงิน</div>
-              <div class="mvalue" id="amountOut">5,454.00 บาท</div>
+              <div class="mvalue" id="amountOut">0.00 บาท</div>
             </div>
 
             <div class="divider"></div>
@@ -605,218 +350,233 @@
   </div>
 
   <script>
-    const themes = [
-      {name:'ม่วงเมฆ',    c1:'#6f2dbd', c2:'#9d4edd', accent:'#ffd166'},
-      {name:'ชมพูขนม',    c1:'#d63384', c2:'#ff85c1', accent:'#ffe066'},
-      {name:'ฟ้านม',      c1:'#277da1', c2:'#4cc9f0', accent:'#fdf0d5'},
-      {name:'เขียวมิ้น',  c1:'#2a9d8f', c2:'#6ee7b7', accent:'#fef3c7'},
-      {name:'ส้มพีช',     c1:'#e76f51', c2:'#ffb4a2', accent:'#fff3b0'},
-      {name:'แดงเชอร์รี่', c1:'#b5179e', c2:'#f72585', accent:'#ffd6a5'},
-      {name:'ครามดาว',    c1:'#3a0ca3', c2:'#4361ee', accent:'#caf0f8'},
-      {name:'ลาเวนเดอร์', c1:'#7b2cbf', c2:'#c77dff', accent:'#fff1e6'},
-      {name:'โกโก้ครีม',  c1:'#6d4c41', c2:'#bc8a5f', accent:'#ffe8d6'},
-      {name:'เลมอนโซดา',  c1:'#7cb518', c2:'#b7e4c7', accent:'#fff3bf'},
-      {name:'เทาเงิน',     c1:'#495057', c2:'#adb5bd', accent:'#f1f3f5'},
-      {name:'โอเชียน',     c1:'#005f73', c2:'#0a9396', accent:'#e9d8a6'},
-      {name:'ซันเซ็ต',     c1:'#9d0208', c2:'#f48c06', accent:'#ffecd1'},
-      {name:'พลัมโรส',     c1:'#8e44ad', c2:'#ff99c8', accent:'#ffe5ec'},
-      {name:'เทอร์ควอยซ์', c1:'#0081a7', c2:'#00afb9', accent:'#fed9b7'}
-    ];
+    (function () {
+      const themes = [
+        {name:'ม่วงเมฆ', c1:'#6f2dbd', c2:'#9d4edd'},
+        {name:'ชมพูขนม', c1:'#d63384', c2:'#ff85c1'},
+        {name:'ฟ้านม', c1:'#277da1', c2:'#4cc9f0'},
+        {name:'เขียวมิ้น', c1:'#2a9d8f', c2:'#6ee7b7'},
+        {name:'ส้มพีช', c1:'#e76f51', c2:'#ffb4a2'},
+        {name:'แดงเชอร์รี่', c1:'#b5179e', c2:'#f72585'},
+        {name:'ครามดาว', c1:'#3a0ca3', c2:'#4361ee'},
+        {name:'ลาเวนเดอร์', c1:'#7b2cbf', c2:'#c77dff'},
+        {name:'โกโก้ครีม', c1:'#6d4c41', c2:'#bc8a5f'},
+        {name:'เลมอนโซดา', c1:'#7cb518', c2:'#b7e4c7'},
+        {name:'เทาเงิน', c1:'#495057', c2:'#adb5bd'},
+        {name:'โอเชียน', c1:'#005f73', c2:'#0a9396'},
+        {name:'ซันเซ็ต', c1:'#9d0208', c2:'#f48c06'},
+        {name:'พลัมโรส', c1:'#8e44ad', c2:'#ff99c8'},
+        {name:'เทอร์ควอยซ์', c1:'#0081a7', c2:'#00afb9'}
+      ];
 
-    const els = {
-      bankName: document.getElementById('bankName'),
-      senderName: document.getElementById('senderName'),
-      senderAcc: document.getElementById('senderAcc'),
-      receiverName: document.getElementById('receiverName'),
-      receiverAcc: document.getElementById('receiverAcc'),
-      amount: document.getElementById('amount'),
-      currency: document.getElementById('currency'),
-      fee: document.getElementById('fee'),
-      refId: document.getElementById('refId'),
-      datetime: document.getElementById('datetime'),
-      qrText: document.getElementById('qrText'),
-      bankNameOut: document.getElementById('bankNameOut'),
-      senderNameOut: document.getElementById('senderNameOut'),
-      senderAccOut: document.getElementById('senderAccOut'),
-      receiverNameOut: document.getElementById('receiverNameOut'),
-      receiverAccOut: document.getElementById('receiverAccOut'),
-      amountOut: document.getElementById('amountOut'),
-      feeOut: document.getElementById('feeOut'),
-      dateOut: document.getElementById('dateOut'),
-      refOut: document.getElementById('refOut'),
-      senderAvatar: document.getElementById('senderAvatar'),
-      receiverAvatar: document.getElementById('receiverAvatar'),
-      themeGrid: document.getElementById('themeGrid'),
-      themeNameOut: document.getElementById('themeNameOut'),
-      saveBtn: document.getElementById('saveBtn'),
-      randomBtn: document.getElementById('randomBtn'),
-      qrBox: document.getElementById('qrcode')
-    };
+      const $ = (id) => document.getElementById(id);
+      const els = {
+        bankName: $('bankName'),
+        senderName: $('senderName'),
+        senderAcc: $('senderAcc'),
+        receiverName: $('receiverName'),
+        receiverAcc: $('receiverAcc'),
+        amount: $('amount'),
+        currency: $('currency'),
+        fee: $('fee'),
+        refId: $('refId'),
+        datetime: $('datetime'),
+        qrText: $('qrText'),
 
-    let currentThemeIndex = 0;
-    let qrInstance = null;
+        bankNameOut: $('bankNameOut'),
+        senderNameOut: $('senderNameOut'),
+        senderAccOut: $('senderAccOut'),
+        receiverNameOut: $('receiverNameOut'),
+        receiverAccOut: $('receiverAccOut'),
+        amountOut: $('amountOut'),
+        feeOut: $('feeOut'),
+        dateOut: $('dateOut'),
+        refOut: $('refOut'),
+        senderAvatar: $('senderAvatar'),
+        receiverAvatar: $('receiverAvatar'),
+        themeGrid: $('themeGrid'),
+        themeNameOut: $('themeNameOut'),
+        saveBtn: $('saveBtn'),
+        randomBtn: $('randomBtn'),
+        qrBox: $('qrcode'),
+        slipCard: $('slipCard')
+      };
 
-    function pad(n){ return String(n).padStart(2,'0'); }
+      let currentThemeIndex = 0;
 
-    function formatMoney(v){
-      const num = Number(v || 0);
-      return num.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
-    }
+      function pad(n){ return String(n).padStart(2,'0'); }
 
-    function formatThaiDate(dateStr){
-      const d = new Date(dateStr);
-      if (Number.isNaN(d.getTime())) return '-';
-      const months = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
-      const day = pad(d.getDate());
-      const month = months[d.getMonth()];
-      const year = d.getFullYear() + 543;
-      const hh = pad(d.getHours());
-      const mm = pad(d.getMinutes());
-      return `${day} ${month} ${year} - ${hh}:${mm}`;
-    }
-
-    function makeRef(){
-      const d = new Date();
-      const base = `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}`;
-      const rand = Math.random().toString(36).slice(2,8).toUpperCase();
-      return `${base}${rand}`;
-    }
-
-    function initials(text){
-      const t = (text || '').trim();
-      return t ? t.charAt(0) : '•';
-    }
-
-    function buildAutoQrText(){
-      return [
-        `BANK:${(els.bankName.value || '').trim()}`,
-        `FROM:${(els.senderName.value || '').trim()}`,
-        `TO:${(els.receiverName.value || '').trim()}`,
-        `AMOUNT:${formatMoney(els.amount.value)} ${els.currency.value}`,
-        `FEE:${formatMoney(els.fee.value)} บาท`,
-        `REF:${(els.refId.value || '').trim()}`,
-        `TIME:${formatThaiDate(els.datetime.value)}`
-      ].join(' | ');
-    }
-
-    function updateQr(){
-      els.qrBox.innerHTML = '';
-      const theme = themes[currentThemeIndex];
-      const qrValue = (els.qrText.value || '').trim() || buildAutoQrText();
-
-      qrInstance = new QRCode(els.qrBox, {
-        text: qrValue,
-        width: 72,
-        height: 72,
-        colorDark: theme.c1,
-        colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.M
-      });
-    }
-
-    function applyTheme(index){
-      currentThemeIndex = index;
-      const t = themes[index];
-      document.documentElement.style.setProperty('--theme-1', t.c1);
-      document.documentElement.style.setProperty('--theme-2', t.c2);
-      document.documentElement.style.setProperty('--theme-accent', t.accent);
-      els.themeNameOut.textContent = `ธีม ${t.name}`;
-
-      document.querySelectorAll('.theme-btn').forEach((btn, i) => {
-        btn.classList.toggle('active', i === index);
-      });
-
-      updateQr();
-    }
-
-    function updateSlip(){
-      const bankName = els.bankName.value.trim() || 'ธนาคาร ปลาวาฬขาว';
-      const senderName = els.senderName.value.trim() || '-';
-      const senderAcc = els.senderAcc.value.trim() || '-';
-      const receiverName = els.receiverName.value.trim() || '-';
-      const receiverAcc = els.receiverAcc.value.trim() || '-';
-      const amount = `${formatMoney(els.amount.value)} ${els.currency.value}`;
-      const fee = `${formatMoney(els.fee.value)} บาท`;
-      const ref = els.refId.value.trim() || '-';
-
-      els.bankNameOut.textContent = bankName;
-      els.senderNameOut.textContent = senderName;
-      els.senderAccOut.textContent = senderAcc;
-      els.receiverNameOut.textContent = receiverName;
-      els.receiverAccOut.textContent = receiverAcc;
-      els.amountOut.textContent = amount;
-      els.feeOut.textContent = fee;
-      els.dateOut.textContent = formatThaiDate(els.datetime.value);
-      els.refOut.textContent = `รหัสอ้างอิง : ${ref}`;
-      els.senderAvatar.textContent = initials(senderName);
-      els.receiverAvatar.textContent = initials(receiverName);
-
-      updateQr();
-    }
-
-    function setNow(){
-      const d = new Date();
-      const local = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
-      els.datetime.value = local.toISOString().slice(0,16);
-    }
-
-    function buildThemeButtons(){
-      themes.forEach((t, i) => {
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'theme-btn';
-        btn.title = t.name;
-        btn.style.background = `linear-gradient(135deg, ${t.c1}, ${t.c2})`;
-        btn.addEventListener('click', () => applyTheme(i));
-        els.themeGrid.appendChild(btn);
-      });
-    }
-
-    async function savePng(){
-      const btn = els.saveBtn;
-      const old = btn.textContent;
-      btn.disabled = true;
-      btn.textContent = 'กำลังบันทึก...';
-      try{
-        const canvas = await html2canvas(document.getElementById('slipCard'), {
-          scale: 3,
-          useCORS: true,
-          backgroundColor: null
-        });
-        const link = document.createElement('a');
-        link.download = `cute-slip-${Date.now()}.png`;
-        link.href = canvas.toDataURL('image/png');
-        link.click();
-      }catch(err){
-        alert('บันทึกไม่สำเร็จ: ' + err.message);
-      }finally{
-        btn.disabled = false;
-        btn.textContent = old;
+      function formatMoney(v){
+        const num = Number(v || 0);
+        return num.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
       }
-    }
 
-    function randomizeRef(){
+      function formatThaiDate(dateStr){
+        const d = new Date(dateStr);
+        if (Number.isNaN(d.getTime())) return '-';
+        const months = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+        return `${pad(d.getDate())} ${months[d.getMonth()]} ${d.getFullYear()+543} - ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+      }
+
+      function makeRef(){
+        const d = new Date();
+        return `${d.getFullYear()}${pad(d.getMonth()+1)}${pad(d.getDate())}${pad(d.getHours())}${pad(d.getMinutes())}${pad(d.getSeconds())}${Math.random().toString(36).slice(2,6).toUpperCase()}`;
+      }
+
+      function initials(text){
+        const t = (text || '').trim();
+        return t ? t.charAt(0) : '•';
+      }
+
+      function setNow(){
+        const d = new Date();
+        const local = new Date(d.getTime() - d.getTimezoneOffset() * 60000);
+        els.datetime.value = local.toISOString().slice(0,16);
+      }
+
+      function buildThemeButtons(){
+        themes.forEach((t, i) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'theme-btn';
+          btn.title = t.name;
+          btn.style.background = `linear-gradient(135deg, ${t.c1}, ${t.c2})`;
+          btn.addEventListener('click', function(){
+            applyTheme(i);
+            syncAll();
+          });
+          els.themeGrid.appendChild(btn);
+        });
+      }
+
+      function applyTheme(index){
+        currentThemeIndex = index;
+        const t = themes[index];
+        document.documentElement.style.setProperty('--theme-1', t.c1);
+        document.documentElement.style.setProperty('--theme-2', t.c2);
+        els.themeNameOut.textContent = `ธีม ${t.name}`;
+        document.querySelectorAll('.theme-btn').forEach((btn, i) => btn.classList.toggle('active', i === index));
+      }
+
+      function qrSeedText(){
+        const manual = (els.qrText.value || '').trim();
+        if (manual) return manual;
+        return [
+          `BANK:${els.bankName.value.trim()}`,
+          `FROM:${els.senderName.value.trim()}`,
+          `TO:${els.receiverName.value.trim()}`,
+          `AMOUNT:${formatMoney(els.amount.value)} ${els.currency.value}`,
+          `FEE:${formatMoney(els.fee.value)} บาท`,
+          `REF:${els.refId.value.trim()}`,
+          `TIME:${formatThaiDate(els.datetime.value)}`
+        ].join('|');
+      }
+
+      function hashString(str){
+        let h = 2166136261;
+        for(let i=0;i<str.length;i++){
+          h ^= str.charCodeAt(i);
+          h = Math.imul(h, 16777619);
+        }
+        return h >>> 0;
+      }
+
+      function drawFinder(x, y, size, dark){
+        return `
+          <rect x="${x}" y="${y}" width="${size}" height="${size}" fill="${dark}"/>
+          <rect x="${x+size*0.15}" y="${y+size*0.15}" width="${size*0.7}" height="${size*0.7}" fill="#fff"/>
+          <rect x="${x+size*0.30}" y="${y+size*0.30}" width="${size*0.4}" height="${size*0.4}" fill="${dark}"/>
+        `;
+      }
+
+      function renderDecorativeQR(text){
+        const theme = themes[currentThemeIndex];
+        const dark = theme.c1;
+        const cells = 21;
+        const cell = 4;
+        const size = cells * cell;
+        const finderSize = 7 * cell;
+        let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" shape-rendering="crispEdges"><rect width="${size}" height="${size}" fill="#fff"/>`;
+
+        svg += drawFinder(0, 0, finderSize, dark);
+        svg += drawFinder(size - finderSize, 0, finderSize, dark);
+        svg += drawFinder(0, size - finderSize, finderSize, dark);
+
+        for (let y = 0; y < cells; y++) {
+          for (let x = 0; x < cells; x++) {
+            const inTL = x < 7 && y < 7;
+            const inTR = x >= cells - 7 && y < 7;
+            const inBL = x < 7 && y >= cells - 7;
+            if (inTL || inTR || inBL) continue;
+
+            const v = hashString(text + ':' + x + ':' + y);
+            if ((v % 3) === 0) {
+              svg += `<rect x="${x*cell}" y="${y*cell}" width="${cell}" height="${cell}" fill="${dark}"/>`;
+            }
+          }
+        }
+
+        svg += `</svg>`;
+        els.qrBox.innerHTML = svg;
+      }
+
+      function syncAll(){
+        els.bankNameOut.textContent = els.bankName.value.trim() || 'ธนาคาร ปลาวาฬขาว';
+        els.senderNameOut.textContent = els.senderName.value.trim() || '-';
+        els.senderAccOut.textContent = els.senderAcc.value.trim() || '-';
+        els.receiverNameOut.textContent = els.receiverName.value.trim() || '-';
+        els.receiverAccOut.textContent = els.receiverAcc.value.trim() || '-';
+        els.amountOut.textContent = `${formatMoney(els.amount.value)} ${els.currency.value}`;
+        els.feeOut.textContent = `${formatMoney(els.fee.value)} บาท`;
+        els.dateOut.textContent = formatThaiDate(els.datetime.value);
+        els.refOut.textContent = `รหัสอ้างอิง : ${els.refId.value.trim() || '-'}`;
+        els.senderAvatar.textContent = initials(els.senderName.value);
+        els.receiverAvatar.textContent = initials(els.receiverName.value);
+        renderDecorativeQR(qrSeedText());
+      }
+
+      async function savePng(){
+        const old = els.saveBtn.textContent;
+        els.saveBtn.disabled = true;
+        els.saveBtn.textContent = 'กำลังบันทึก...';
+        try{
+          const canvas = await html2canvas(els.slipCard, {
+            scale: 3,
+            useCORS: true,
+            backgroundColor: null
+          });
+          const a = document.createElement('a');
+          a.download = `cute-slip-${Date.now()}.png`;
+          a.href = canvas.toDataURL('image/png');
+          a.click();
+        }catch(err){
+          alert('บันทึกไม่สำเร็จ: ' + err.message);
+        }finally{
+          els.saveBtn.disabled = false;
+          els.saveBtn.textContent = old;
+        }
+      }
+
+      [
+        els.bankName, els.senderName, els.senderAcc, els.receiverName, els.receiverAcc,
+        els.amount, els.currency, els.fee, els.refId, els.datetime, els.qrText
+      ].forEach((el) => {
+        ['input','change','keyup'].forEach((evt) => el.addEventListener(evt, syncAll));
+      });
+
+      els.randomBtn.addEventListener('click', function(){
+        els.refId.value = makeRef();
+        syncAll();
+      });
+
+      els.saveBtn.addEventListener('click', savePng);
+
+      buildThemeButtons();
+      setNow();
       els.refId.value = makeRef();
-      updateSlip();
-    }
-
-    buildThemeButtons();
-    setNow();
-    els.refId.value = makeRef();
-    applyTheme(0);
-    updateSlip();
-
-    [
-      els.bankName, els.senderName, els.senderAcc, els.receiverName, els.receiverAcc,
-      els.amount, els.currency, els.fee, els.refId, els.datetime, els.qrText
-    ].forEach(el => {
-      el.addEventListener('input', updateSlip);
-      el.addEventListener('change', updateSlip);
-      el.addEventListener('keyup', updateSlip);
-    });
-
-    els.saveBtn.addEventListener('click', savePng);
-    els.randomBtn.addEventListener('click', randomizeRef);
+      applyTheme(0);
+      syncAll();
+    })();
   </script>
 </body>
 </html>
