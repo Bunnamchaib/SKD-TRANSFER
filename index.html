@@ -13,7 +13,6 @@
     :root{
       --theme-1:#7b2cbf;
       --theme-2:#9d4edd;
-      --theme-3:#5a189a;
       --theme-soft:#f6efff;
       --theme-accent:#ffd166;
       --ok:#12c56a;
@@ -22,7 +21,6 @@
       --line:#ebedf4;
       --paper:#ffffff;
       --bg:#f4f5fb;
-      --theme-name: "ม่วงเมฆ";
     }
     *{box-sizing:border-box}
     body{
@@ -69,6 +67,11 @@
     .grid2{
       display:grid;
       grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    .grid3{
+      display:grid;
+      grid-template-columns:1.15fr .85fr .9fr;
       gap:12px;
     }
     .group{margin-bottom:12px}
@@ -191,7 +194,6 @@
     .cloud.c3{width:64px;height:22px;left:112px;top:58px;border-radius:50px}
     .cloud.c3::before{width:24px;height:24px;left:8px;top:-9px}
     .cloud.c3::after{width:26px;height:26px;left:30px;top:-11px}
-
     .bankbar{
       position:relative;
       z-index:2;
@@ -225,7 +227,6 @@
       font-weight:300;
       letter-spacing:.2px;
     }
-
     .sheet{
       background:
         linear-gradient(rgba(255,255,255,.94),rgba(255,255,255,.96)),
@@ -233,7 +234,7 @@
       background-size:auto, 24px 24px;
       padding:20px 0 0;
       position:relative;
-      min-height:620px;
+      min-height:650px;
     }
     .status{
       display:flex;
@@ -307,17 +308,23 @@
       justify-content:space-between;
       align-items:center;
       min-height:52px;
+      gap:10px;
       font-size:1.08rem;
     }
     .moneyline .mvalue{
       font-size:2rem;
       font-weight:600;
       color:#2b3140;
+      text-align:right;
     }
     .moneyline.fee .mvalue{
-      font-size:1.5rem;
+      font-size:1.4rem;
       font-weight:500;
       color:#384255;
+    }
+    .inline-mut{
+      color:#96a0b2;
+      font-size:.9rem;
     }
     .qrwrap{
       display:flex;
@@ -327,10 +334,19 @@
     #qrcode{
       width:92px;
       min-height:92px;
+      display:flex;
+      justify-content:center;
+      align-items:center;
       background:#fff;
       padding:10px;
       border-radius:18px;
       box-shadow:0 10px 26px rgba(0,0,0,.06);
+      overflow:hidden;
+    }
+    #qrcode img, #qrcode canvas{
+      display:block !important;
+      width:72px !important;
+      height:72px !important;
     }
     .footer-art{
       position:relative;
@@ -399,12 +415,15 @@
       .panel{position:static}
       .phone-shell{padding:14px}
     }
+    @media (max-width: 640px){
+      .grid3{grid-template-columns:1fr}
+    }
     @media (max-width: 520px){
       body{padding:12px}
       .panel{padding:16px;border-radius:22px}
       .slip{width:100%}
       #captureArea{width:100%;display:flex;justify-content:center}
-      .actions{grid-template-columns:1fr}
+      .actions,.grid2{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -412,7 +431,7 @@
   <div class="wrap">
     <section class="panel">
       <h1>Slip Generator น่ารัก</h1>
-      <p class="sub">ไฟล์เดียว index.html ปรับข้อมูลได้ทันที เลือกธีมได้ 15 สี และบันทึกเป็น PNG ได้</p>
+      <p class="sub">ใช้ UI เดิมเป็นแม่แบบ แล้วเพิ่มให้แก้ทุกอย่างแบบ realtime พร้อมสกุลเงินหลายแบบ</p>
 
       <div class="group">
         <label for="bankName">ชื่อธนาคาร</label>
@@ -441,10 +460,25 @@
         </div>
       </div>
 
-      <div class="grid2">
+      <div class="grid3">
         <div class="group">
           <label for="amount">จำนวนเงิน</label>
           <input id="amount" type="number" step="0.01" value="5454" />
+        </div>
+        <div class="group">
+          <label for="currency">หน่วยเงิน</label>
+          <select id="currency">
+            <option value="บาท" selected>บาท</option>
+            <option value="เบรี">เบรี</option>
+            <option value="ดอลลาร์">ดอลลาร์</option>
+            <option value="เยน">เยน</option>
+            <option value="หยวน">หยวน</option>
+            <option value="วอน">วอน</option>
+            <option value="ยูโร">ยูโร</option>
+            <option value="ทอง">ทอง</option>
+            <option value="เครดิต">เครดิต</option>
+            <option value="เหรียญ">เหรียญ</option>
+          </select>
         </div>
         <div class="group">
           <label for="fee">ค่าธรรมเนียม</label>
@@ -465,7 +499,7 @@
 
       <div class="group">
         <label for="qrText">ข้อความใน QR Code</label>
-        <input id="qrText" value="" />
+        <input id="qrText" value="" placeholder="ถ้าไม่กรอก ระบบจะสร้างจากข้อมูลบนฟอร์มให้อัตโนมัติ" />
       </div>
 
       <div class="group">
@@ -479,7 +513,7 @@
       </div>
 
       <div class="note">
-        งานนี้ออกแบบเป็นสลิปโทนน่ารักเชิงตกแต่งสำหรับเดโม งานกราฟิก หรือคอนเทนต์เท่านั้น ผู้ใช้ปรับข้อความเองได้ทั้งหมด
+        ฟอร์มทุกช่องจะขึ้นบนสลิปแบบ realtime ทันที รวมทั้งรหัสธุรกรรมและ QR code
       </div>
     </section>
 
@@ -505,7 +539,7 @@
               <div class="okbadge">✓</div>
               <div class="oktext">โอนเงินสำเร็จ</div>
               <div class="dt" id="dateOut"></div>
-              <div class="ref" id="refOut"></div>
+              <div class="ref" id="refOut">รหัสอ้างอิง : -</div>
             </div>
 
             <div class="divider"></div>
@@ -515,8 +549,8 @@
               <div class="person">
                 <div class="avatar" id="senderAvatar">ผ</div>
                 <div>
-                  <div class="pname" id="senderNameOut"></div>
-                  <div class="pacc" id="senderAccOut"></div>
+                  <div class="pname" id="senderNameOut">-</div>
+                  <div class="pacc" id="senderAccOut">-</div>
                 </div>
               </div>
               <div></div>
@@ -529,8 +563,8 @@
               <div class="person">
                 <div class="avatar" id="receiverAvatar">ร</div>
                 <div>
-                  <div class="pname" id="receiverNameOut"></div>
-                  <div class="pacc" id="receiverAccOut"></div>
+                  <div class="pname" id="receiverNameOut">-</div>
+                  <div class="pacc" id="receiverAccOut">-</div>
                 </div>
               </div>
               <div></div>
@@ -540,7 +574,7 @@
 
             <div class="moneyline">
               <div class="label">จำนวนเงิน</div>
-              <div class="mvalue" id="amountOut">5,454.00</div>
+              <div class="mvalue" id="amountOut">5,454.00 บาท</div>
             </div>
 
             <div class="divider"></div>
@@ -596,6 +630,7 @@
       receiverName: document.getElementById('receiverName'),
       receiverAcc: document.getElementById('receiverAcc'),
       amount: document.getElementById('amount'),
+      currency: document.getElementById('currency'),
       fee: document.getElementById('fee'),
       refId: document.getElementById('refId'),
       datetime: document.getElementById('datetime'),
@@ -614,11 +649,12 @@
       themeGrid: document.getElementById('themeGrid'),
       themeNameOut: document.getElementById('themeNameOut'),
       saveBtn: document.getElementById('saveBtn'),
-      randomBtn: document.getElementById('randomBtn')
+      randomBtn: document.getElementById('randomBtn'),
+      qrBox: document.getElementById('qrcode')
     };
 
-    let qr;
     let currentThemeIndex = 0;
+    let qrInstance = null;
 
     function pad(n){ return String(n).padStart(2,'0'); }
 
@@ -629,7 +665,7 @@
 
     function formatThaiDate(dateStr){
       const d = new Date(dateStr);
-      if (Number.isNaN(d.getTime())) return '';
+      if (Number.isNaN(d.getTime())) return '-';
       const months = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
       const day = pad(d.getDate());
       const month = months[d.getMonth()];
@@ -651,13 +687,39 @@
       return t ? t.charAt(0) : '•';
     }
 
+    function buildAutoQrText(){
+      return [
+        `BANK:${(els.bankName.value || '').trim()}`,
+        `FROM:${(els.senderName.value || '').trim()}`,
+        `TO:${(els.receiverName.value || '').trim()}`,
+        `AMOUNT:${formatMoney(els.amount.value)} ${els.currency.value}`,
+        `FEE:${formatMoney(els.fee.value)} บาท`,
+        `REF:${(els.refId.value || '').trim()}`,
+        `TIME:${formatThaiDate(els.datetime.value)}`
+      ].join(' | ');
+    }
+
+    function updateQr(){
+      els.qrBox.innerHTML = '';
+      const theme = themes[currentThemeIndex];
+      const qrValue = (els.qrText.value || '').trim() || buildAutoQrText();
+
+      qrInstance = new QRCode(els.qrBox, {
+        text: qrValue,
+        width: 72,
+        height: 72,
+        colorDark: theme.c1,
+        colorLight: '#ffffff',
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }
+
     function applyTheme(index){
       currentThemeIndex = index;
       const t = themes[index];
       document.documentElement.style.setProperty('--theme-1', t.c1);
       document.documentElement.style.setProperty('--theme-2', t.c2);
       document.documentElement.style.setProperty('--theme-accent', t.accent);
-      document.documentElement.style.setProperty('--theme-name', `"${t.name}"`);
       els.themeNameOut.textContent = `ธีม ${t.name}`;
 
       document.querySelectorAll('.theme-btn').forEach((btn, i) => {
@@ -667,39 +729,28 @@
       updateQr();
     }
 
-    function updateQr(){
-      const qrBox = document.getElementById('qrcode');
-      qrBox.innerHTML = '';
-      const theme = themes[currentThemeIndex];
-      const text = els.qrText.value.trim() || [
-        els.bankName.value.trim(),
-        els.senderName.value.trim(),
-        els.receiverName.value.trim(),
-        `AMT:${formatMoney(els.amount.value)}`,
-        `REF:${els.refId.value.trim() || ''}`
-      ].join(' | ');
-      qr = new QRCode(qrBox, {
-        text,
-        width: 72,
-        height: 72,
-        colorDark: theme.c1,
-        colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.M
-      });
-    }
-
     function updateSlip(){
-      els.bankNameOut.textContent = els.bankName.value.trim() || 'ธนาคาร ปลาวาฬขาว';
-      els.senderNameOut.textContent = els.senderName.value.trim() || '-';
-      els.senderAccOut.textContent = els.senderAcc.value.trim() || '-';
-      els.receiverNameOut.textContent = els.receiverName.value.trim() || '-';
-      els.receiverAccOut.textContent = els.receiverAcc.value.trim() || '-';
-      els.amountOut.textContent = formatMoney(els.amount.value);
-      els.feeOut.textContent = `${formatMoney(els.fee.value)} บาท`;
+      const bankName = els.bankName.value.trim() || 'ธนาคาร ปลาวาฬขาว';
+      const senderName = els.senderName.value.trim() || '-';
+      const senderAcc = els.senderAcc.value.trim() || '-';
+      const receiverName = els.receiverName.value.trim() || '-';
+      const receiverAcc = els.receiverAcc.value.trim() || '-';
+      const amount = `${formatMoney(els.amount.value)} ${els.currency.value}`;
+      const fee = `${formatMoney(els.fee.value)} บาท`;
+      const ref = els.refId.value.trim() || '-';
+
+      els.bankNameOut.textContent = bankName;
+      els.senderNameOut.textContent = senderName;
+      els.senderAccOut.textContent = senderAcc;
+      els.receiverNameOut.textContent = receiverName;
+      els.receiverAccOut.textContent = receiverAcc;
+      els.amountOut.textContent = amount;
+      els.feeOut.textContent = fee;
       els.dateOut.textContent = formatThaiDate(els.datetime.value);
-      els.refOut.textContent = `รหัสอ้างอิง : ${els.refId.value.trim() || '-'}`;
-      els.senderAvatar.textContent = initials(els.senderName.value);
-      els.receiverAvatar.textContent = initials(els.receiverName.value);
+      els.refOut.textContent = `รหัสอ้างอิง : ${ref}`;
+      els.senderAvatar.textContent = initials(senderName);
+      els.receiverAvatar.textContent = initials(receiverName);
+
       updateQr();
     }
 
@@ -746,11 +797,7 @@
 
     function randomizeRef(){
       els.refId.value = makeRef();
-      if(!els.qrText.value.trim()){
-        updateSlip();
-      }else{
-        updateSlip();
-      }
+      updateSlip();
     }
 
     buildThemeButtons();
@@ -761,8 +808,12 @@
 
     [
       els.bankName, els.senderName, els.senderAcc, els.receiverName, els.receiverAcc,
-      els.amount, els.fee, els.refId, els.datetime, els.qrText
-    ].forEach(el => el.addEventListener('input', updateSlip));
+      els.amount, els.currency, els.fee, els.refId, els.datetime, els.qrText
+    ].forEach(el => {
+      el.addEventListener('input', updateSlip);
+      el.addEventListener('change', updateSlip);
+      el.addEventListener('keyup', updateSlip);
+    });
 
     els.saveBtn.addEventListener('click', savePng);
     els.randomBtn.addEventListener('click', randomizeRef);
